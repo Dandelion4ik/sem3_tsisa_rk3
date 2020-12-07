@@ -30,12 +30,14 @@ void vec_filtered_fun_value(const std::vector<double> &noisy_fun_value,
   int m = (r - 1) / 2;
   for (int k = m; k < 100 - m; ++k) {
     double sum = 0;
-    for (int i = k - m; i < k + m; ++i) {
-      sum += v_v_alpha[k][i + m + 1 - k] / noisy_fun_value[i];
+    for (int i = k - m; i <= k + m; ++i) {
+      sum += v_v_alpha[k][i + m + 1 - k - 1] / noisy_fun_value[i];
     }
     filtered_fun_value.push_back(pow(sum, -1));
   }
 }
+
+
 
 int main() {
   const int r = 3;
@@ -45,8 +47,8 @@ int main() {
   vec_noisy_fun_value(noisy_fun_value);
   vector_vec_alpha(v_v_alpha);
   vec_filtered_fun_value(noisy_fun_value, v_v_alpha, filtered_fun_value, r);
-  for (auto &it : filtered_fun_value) {
-    std::cout << it << std::endl;
-  }
+  /*  for (auto &it : filtered_fun_value) {
+      std::cout << it << std::endl;
+    }*/
   return 0;
 }
