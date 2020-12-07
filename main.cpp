@@ -37,18 +37,37 @@ void vec_filtered_fun_value(const std::vector<double> &noisy_fun_value,
   }
 }
 
+double search_noise_criteria(const std::vector<double> &filtered_fun_value) {
+  double sum = 0;
+  for (auto i = 1; i < 98; ++i) {
+    sum += pow(filtered_fun_value[i] - filtered_fun_value[i - 1], 2);
+  }
+  return pow(sum, 0.5);
+}
+
+double
+search_difference_criterion(const std::vector<double> &filtered_fun_value,
+                            const std::vector<double> &noisy_fun_value) {
+  double sum = 0;
+  for (auto i = 0; i < 98; ++i) {
+    sum += pow(filtered_fun_value[i] - noisy_fun_value[i], 2);
+  }
+  return pow(sum * 0.01, 0.5);
+}
 
 
 int main() {
   const int r = 3;
+  double noise_criteria = 0;
+  double difference_criterion = 0;
   std::vector<double> noisy_fun_value = {};
   std::vector<std::vector<double>> v_v_alpha = {};
   std::vector<double> filtered_fun_value = {};
   vec_noisy_fun_value(noisy_fun_value);
   vector_vec_alpha(v_v_alpha);
   vec_filtered_fun_value(noisy_fun_value, v_v_alpha, filtered_fun_value, r);
-  /*  for (auto &it : filtered_fun_value) {
-      std::cout << it << std::endl;
-    }*/
+  noise_criteria = search_noise_criteria(filtered_fun_value);
+  difference_criterion =
+      search_difference_criterion(filtered_fun_value, noisy_fun_value);
   return 0;
 }
