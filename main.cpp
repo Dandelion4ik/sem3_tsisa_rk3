@@ -58,13 +58,11 @@ double search_functionality(const double &noise_criteria,
                             const double &difference_criterion) {
   double n = 10;
   double min = 1000000;
-  double lymbda = 0;
   for (auto i = 0; i <= n; ++i) {
     double arg =
         (i / n) * noise_criteria + (1 - (i / n)) * difference_criterion;
     if (arg < min) {
       min = arg;
-      lymbda = i / n;
     }
   }
   return min;
